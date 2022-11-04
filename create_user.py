@@ -2,9 +2,7 @@ import json
 import classes
 import os
 from uuid import uuid4
-from cryptography.fernet import Fernet
 import hashlib
-import getpass
 import sys
 
 def create_user(name, user_list):
@@ -21,8 +19,11 @@ users = classes.User_List({
     "users":dict()
 })
 users_file = open("users.txt", "r")
+login_file = open("login.txt", "r")
 users.user_reference = json.loads(users_file.read())
+id_key_dict = json.loads(login_file.read())
 users_file.close()
+login_file.close()
 
 
 user = create_user(sys.argv[1],users)
@@ -39,5 +40,8 @@ print(f"User {user.name} created with UUID {user.id}")
 
 
 users_file = open("users.txt", "w")
+login_file = open("login.txt", "w")
 users_file.write(json.dumps(users.user_reference))
+login_file.write(json.dumps(id_key_dict))
+login_file.close()
 users_file.close()
